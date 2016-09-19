@@ -3,14 +3,31 @@ package analyse
 import (
 	"math"
 	"sort"
+	"unicode/utf8"
 
-	"github.com/wangbin/jiebago/posseg"
+	"github.com/Darren/jiebago/posseg"
 )
 
 const dampingFactor = 0.85
 
+// 词性分类 https://gist.github.com/luw2007/6016931
+
 var (
-	defaultAllowPOS = []string{"ns", "n", "vn", "v"}
+	defaultAllowPOS = []string{
+		"nr",   //人名
+		"nrf",  //音译人名
+		"nrfg", //名人
+		"ns",   //地名
+		"nsf",  //音译地名
+		"nt",   //机构团体名
+		"nz",   //其他专名
+		"nl",   //名词性惯用语
+		"ng",   //名词性惯用语
+		"n",
+		"vn",
+	}
+
+	defaultMinWordLength = 2
 )
 
 type edge struct {
@@ -125,10 +142,15 @@ func (t *TextRanker) TextRankWithPOS(sentence string, topK int, allowPOS []strin
 	}
 	for i := range pairs {
 		if _, ok := posFilt[pairs[i].Pos()]; ok {
-			for j := i + 1; j < i+span && j <= len(pairs); j++ {
+			for j := i + 1; j < i+span && j < len(pairs); j++ {
 				if _, ok := posFilt[pairs[j].Pos()]; !ok {
 					continue
 				}
+
+				if utf8.RuneCountInString(pairs[i].Text()) < defaultMinWordLength {
+					continue
+				}
+
 				if _, ok := cm[[2]string{pairs[i].Text(), pairs[j].Text()}]; !ok {
 					cm[[2]string{pairs[i].Text(), pairs[j].Text()}] = 1.0
 				} else {
@@ -156,6 +178,10 @@ func (t *TextRanker) TextRank(sentence string, topK int) Segments {
 // TextRanker is used to extract tags from sentence.
 type TextRanker struct {
 	seg *posseg.Segmenter
+}
+
+func (t *TextRanker) SetSegmenter(seg *posseg.Segmenter) {
+	t.seg = seg
 }
 
 // LoadDictionary reads a given file and create a new dictionary file for Textranker.

@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/Darren/jiebago/tokenizers"
 	"github.com/blevesearch/bleve"
-	_ "github.com/wangbin/jiebago/tokenizers"
 )
 
 func Example_beleveSearch() {

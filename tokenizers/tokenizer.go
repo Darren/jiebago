@@ -5,9 +5,11 @@ import (
 	"regexp"
 	"strconv"
 
+	"sync"
+
+	"github.com/Darren/jiebago"
 	"github.com/blevesearch/bleve/analysis"
 	"github.com/blevesearch/bleve/registry"
-	"github.com/wangbin/jiebago"
 )
 
 // Name is the jieba tokenizer name.
@@ -20,6 +22,9 @@ type JiebaTokenizer struct {
 	seg             jiebago.Segmenter
 	hmm, searchMode bool
 }
+
+var segInitOnce sync.Once
+var seg jiebago.Segmenter
 
 /*
 NewJiebaTokenizer creates a new JiebaTokenizer.
@@ -42,8 +47,11 @@ Parameters:
     this word into "交换", "换机", which are valid Chinese words.
 */
 func NewJiebaTokenizer(dictFilePath string, hmm, searchMode bool) (analysis.Tokenizer, error) {
-	var seg jiebago.Segmenter
-	err := seg.LoadDictionary(dictFilePath)
+	var err error
+	segInitOnce.Do(func() {
+		err = seg.LoadDictionary(dictFilePath)
+	})
+
 	return &JiebaTokenizer{
 		seg:        seg,
 		hmm:        hmm,

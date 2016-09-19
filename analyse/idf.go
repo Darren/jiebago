@@ -4,7 +4,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/wangbin/jiebago/dictionary"
+	"github.com/Darren/jiebago/dictionary"
 )
 
 // Idf represents a thread-safe dictionary for all words with their
