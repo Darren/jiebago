@@ -185,7 +185,19 @@ func (t *TextRanker) SetSegmenter(seg *posseg.Segmenter) {
 }
 
 // LoadDictionary reads a given file and create a new dictionary file for Textranker.
-func (t *TextRanker) LoadDictionary(fileName string) error {
+func (t *TextRanker) LoadDictionary(fileName string, userFileName string) error {
 	t.seg = new(posseg.Segmenter)
-	return t.seg.LoadDictionary(fileName)
+	err := t.seg.LoadDictionary(fileName)
+	if err != nil {
+		return err
+	}
+
+	if userFileName != "" {
+		err = t.seg.LoadUserDictionary(userFileName)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
