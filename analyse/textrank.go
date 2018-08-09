@@ -171,7 +171,13 @@ func (t *TextRanker) TextRankWithPOS(sentence string, topK int, allowPOS []strin
 
 // TextRank extract keywords from sentence using TextRank algorithm.
 // Parameter topK specify how many top keywords to be returned at most.
-func (t *TextRanker) TextRank(sentence string, topK int) Segments {
+func (t *TextRanker) TextRank(sentence string) Segments {
+	return t.TextRankWithPOS(sentence, -1, defaultAllowPOS)
+}
+
+// TopTextRank extract keywords from sentence using TextRank algorithm.
+// Parameter topK specify how many top keywords to be returned at most.
+func (t *TextRanker) TopTextRank(sentence string, topK int) Segments {
 	return t.TextRankWithPOS(sentence, topK, defaultAllowPOS)
 }
 
