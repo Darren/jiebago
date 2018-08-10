@@ -181,6 +181,31 @@ func (t *TextRanker) TopTextRank(sentence string, topK int) Segments {
 	return t.TextRankWithPOS(sentence, topK, defaultAllowPOS)
 }
 
+// SimHashRank extract keywords from sentence using TextRank algorithm for SimHash usage.
+func (t *TextRanker) SimHashRank(sentence string) Segments {
+	g := newUndirectWeightedGraph()
+	cm := make(map[[2]string]float64)
+	span := 5
+	var pairs []posseg.Segment
+	for pair := range t.seg.Cut(sentence, true) {
+		pairs = append(pairs, pair)
+	}
+	for i := range pairs {
+		for j := i + 1; j < i+span && j < len(pairs); j++ {
+			if _, ok := cm[[2]string{pairs[i].Text(), pairs[j].Text()}]; !ok {
+				cm[[2]string{pairs[i].Text(), pairs[j].Text()}] = 1.0
+			} else {
+				cm[[2]string{pairs[i].Text(), pairs[j].Text()}] += 1.0
+			}
+		}
+	}
+
+	for startEnd, weight := range cm {
+		g.addEdge(startEnd[0], startEnd[1], weight)
+	}
+	return g.rank()
+}
+
 // TextRanker is used to extract tags from sentence.
 type TextRanker struct {
 	seg *posseg.Segmenter
