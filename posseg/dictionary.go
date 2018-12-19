@@ -4,7 +4,7 @@ import (
 	"math"
 	"sync"
 
-	"github.com/Darren/jiebago/dictionary"
+	"github.com/darren/jiebago/dictionary"
 )
 
 // A Dictionary represents a thread-safe dictionary used for word segmentation.

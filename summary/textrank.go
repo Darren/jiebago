@@ -7,7 +7,7 @@ import (
 
 	"unicode/utf8"
 
-	"github.com/Darren/jiebago/posseg"
+	"github.com/darren/jiebago/posseg"
 )
 
 const dampingFactor = 0.85

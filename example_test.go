@@ -3,7 +3,7 @@ package jiebago_test
 import (
 	"fmt"
 
-	"github.com/Darren/jiebago"
+	"github.com/darren/jiebago"
 )
 
 func Example() {

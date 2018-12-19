@@ -7,7 +7,7 @@ import (
 
 	"sync"
 
-	"github.com/Darren/jiebago"
+	"github.com/darren/jiebago"
 	"github.com/blevesearch/bleve/analysis"
 	"github.com/blevesearch/bleve/registry"
 )

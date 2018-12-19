@@ -5,7 +5,7 @@ import (
 	"math"
 	"regexp"
 
-	"github.com/Darren/jiebago/util"
+	"github.com/darren/jiebago/util"
 )
 
 var (

@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/Darren/jiebago/tokenizers"
+	_ "github.com/darren/jiebago/tokenizers"
 	"github.com/blevesearch/bleve"
 )
 

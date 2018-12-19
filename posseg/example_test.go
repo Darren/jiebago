@@ -3,7 +3,7 @@ package posseg_test
 import (
 	"fmt"
 
-	"github.com/Darren/jiebago/posseg"
+	"github.com/darren/jiebago/posseg"
 )
 
 func Example() {
