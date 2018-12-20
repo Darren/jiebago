@@ -178,8 +178,12 @@ func (t *TextRanker) TextRank(text string, limit int) Sentences {
 
 	totalLength := 0
 	for _, t := range tags {
+		c := utf8.RuneCountInString(t.Text())
+		if c > limit {
+			continue
+		}
 		pos := sm[t.Text()]
-		totalLength += utf8.RuneCountInString(t.Text()) + 1
+		totalLength += c + 1
 		if totalLength > limit {
 			break
 		}
