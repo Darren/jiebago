@@ -113,7 +113,7 @@ func (u *undirectWeightedGraph) rank() Sentences {
 }
 
 func isSetenctStop(r rune) bool {
-	return r == '。' || r == '\n'
+	return r == '。' || r == '！' || r == '？' || r == '\n' || r == '\r'
 }
 
 func (t *TextRanker) Summary(text string, limit int) string {
